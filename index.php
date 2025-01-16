@@ -9,23 +9,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    
     if (move_uploaded_file($file['tmp_name'], $targetFile)) {
         echo "The file " . htmlspecialchars($fileName) . " has been uploaded successfully!";
+
+        $newFileName = "renamed_" . uniqid() . "." . $fileType;
+        $newTargetFile = $target . $newFileName;
+    
+    if (rename($targetFile, $newTargetFile)) {
+    echo "The file has been renamed to " . htmlspecialchars($newFileName) . ".<br>";
+    
+   
+    if (unlink($newTargetFile)) {
+       echo "The file " . htmlspecialchars($newFileName) . " has been deleted.";
+    }}
+
+
     } else {
         echo "Error: There was a problem uploading your file.";
     }
-  // Move the file to another folder
-        if (rename($targetFile, $destinationFile)) {
-            echo "The file has been moved to the archive folder.<br>";
-        } else {
-            echo "Error: Unable to move the file to the archive folder.<br>";
-        }
-        // Optionally delete the file from the destination folder
-        if (unlink($destinationFile)) {
-            echo "The file has been deleted from the archive folder.<br>";
-        } else {
-            echo "Error: Unable to delete the file from the archive folder.<br>";
-        }
-    } else {
-        echo "Error: There was a problem uploading your file.<br>";
+  
     }
 
 
